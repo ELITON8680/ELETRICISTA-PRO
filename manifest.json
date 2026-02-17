@@ -1,0 +1,24 @@
+
+{
+  "name": "Orçamento Elétrico Pro",
+  "short_name": "EletroPro",
+  "description": "Aplicativo profissional para eletricistas. Gere orçamentos e propostas comerciais em PDF.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#1e293b",
+  "icons": [
+    {
+      "src": "https://img.icons8.com/fluency/144/flash-on.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://img.icons8.com/fluency/512/flash-on.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

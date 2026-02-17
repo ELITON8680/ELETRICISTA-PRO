@@ -1,0 +1,12 @@
+{
+  "name": "6.1 Elétrica Pro",
+  "short_name": "EletroPro",
+  "description": "Aplicativo profissional para eletricistas. Gere propostas comerciais em PDF e gerencie orçamentos com rapidez.",
+  "theme_color": "#1e293b",
+  "background_color": "#f8fafc",
+  "display": "standalone",
+  "orientation": "portrait",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}

@@ -8,10 +8,11 @@ import BudgetForm from './components/BudgetForm';
 import History from './components/History';
 import Profile from './components/Profile';
 import SettingsView from './components/SettingsView';
-import { LayoutGrid, FileText, History as HistoryIcon, User, Plus } from 'lucide-react';
+import MaterialsManager from './components/MaterialsManager';
+import { LayoutGrid, FileText, History as HistoryIcon, User, Plus, Package } from 'lucide-react';
 
 const App: React.FC = () => {
-  const [view, setView] = useState<'dashboard' | 'form' | 'history' | 'profile' | 'settings'>('dashboard');
+  const [view, setView] = useState<'dashboard' | 'form' | 'history' | 'profile' | 'settings' | 'materials'>('dashboard');
   
   const [professional, setProfessional] = useState<ProfessionalData>(() => 
     getFromStorage('professional', {
@@ -181,14 +182,16 @@ const App: React.FC = () => {
               onUpdateHasPdf={handleUpdateHasPdf}
             />
           )}
+          {view === 'materials' && <MaterialsManager settings={settings} onUpdateSettings={setSettings} />}
           {view === 'profile' && <Profile professional={professional} onUpdate={setProfessional} />}
           {view === 'settings' && <SettingsView settings={settings} budgets={budgets} professional={professional} onUpdate={setSettings} onBack={() => setView('dashboard')} />}
         </div>
       </main>
 
-      <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-32px)] max-w-md bg-slate-900 rounded-[32px] h-20 px-12 flex items-center justify-around shadow-2xl z-30 ring-8 ring-white/50 backdrop-blur-md">
+      <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-32px)] max-w-md bg-slate-900 rounded-[32px] h-20 px-6 flex items-center justify-around shadow-2xl z-30 ring-8 ring-white/50 backdrop-blur-md">
         <NavButton active={view === 'dashboard'} icon={<LayoutGrid />} label="Home" onClick={() => setView('dashboard')} />
         <NavButton active={view === 'form'} icon={<FileText />} label="Form" onClick={() => setView('form')} />
+        <NavButton active={view === 'materials'} icon={<Package />} label="Materiais" onClick={() => setView('materials')} />
         <NavButton active={view === 'history'} icon={<HistoryIcon />} label="Lista" onClick={() => setView('history')} />
       </nav>
     </div>

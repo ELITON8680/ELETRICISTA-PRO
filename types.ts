@@ -32,24 +32,21 @@ export enum AdjustmentType {
 export interface MaterialItem {
   id: string;
   description: string;
-  amperage: string;
+  category: string;
+  unit: string;
   quantity: number;
   unitValue: number;
   total: number;
+  amperage?: string;
 }
 
-export interface AppliedService {
+export interface CatalogMaterial {
   id: string;
   name: string;
   category: string;
-  unitValue: number;
-  unitType: string;
-  quantity: number;
-  discountValue: number;
-  discountType: AdjustmentType;
-  markupValue: number;
-  markupType: AdjustmentType;
-  total: number;
+  unit: string;
+  defaultValue: number;
+  isCustom?: boolean;
 }
 
 export interface ProfessionalData {
@@ -71,6 +68,7 @@ export interface ClientData {
 export interface AppSettings {
   workTypePercentages: Record<string, number>;
   workPatternPercentages: Record<string, number>;
+  customMaterials: CatalogMaterial[];
 }
 
 export interface BudgetData {
@@ -97,4 +95,18 @@ export interface BudgetData {
   executionDeadline: string;
   proposalValidity: string;
   paymentConditions: string;
+}
+
+export interface AppliedService {
+  id: string;
+  name: string;
+  category: string;
+  unitValue: number;
+  unitType: string;
+  quantity: number;
+  discountValue: number;
+  discountType: AdjustmentType;
+  markupValue: number;
+  markupType: AdjustmentType;
+  total: number;
 }

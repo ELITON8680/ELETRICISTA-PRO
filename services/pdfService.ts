@@ -3,6 +3,24 @@ import { BudgetData, ProfessionalData, PricingMode } from '../types';
 import { formatCurrency } from '../utils';
 import { jsPDF } from 'jspdf';
 
+// Função auxiliar para download robusto em dispositivos móveis usando Blob
+const downloadPDF = (doc: jsPDF, filename: string) => {
+  try {
+    const pdfBlob = doc.output('blob');
+    const url = URL.createObjectURL(pdfBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error("Erro interno no download do PDF:", error);
+    throw error;
+  }
+};
+
 export const generatePDF = async (budget: BudgetData, professional: ProfessionalData, shareOnWhatsApp: boolean = false): Promise<boolean> => {
   try {
     const doc = new jsPDF();
@@ -22,8 +40,10 @@ export const generatePDF = async (budget: BudgetData, professional: Professional
     
     if (professional.logo) {
       try {
-        doc.addImage(professional.logo, 'PNG', margin, 8, 28, 28);
-      } catch (e) {}
+        doc.addImage(professional.logo, 'PNG', margin, 8, 28, 28, undefined, 'FAST');
+      } catch (e) {
+        console.warn('Falha ao renderizar logo no PDF:', e);
+      }
     }
     
     doc.setTextColor('#ffffff');
@@ -131,9 +151,7 @@ export const generatePDF = async (budget: BudgetData, professional: Professional
     
     doc.setFont('helvetica', 'normal');
     
-    // Total de materiais
-    const materialsTotal = budget.materials.reduce((acc, i) => acc + i.total, 0);
-    // Valor total da mão de obra (Mão de obra + Custos + Markups - Materiais)
+    const materialsTotal = budget.materials.reduce((acc, i) => acc + (i.total || 0), 0);
     const laborTotalConsolidated = budget.finalTotal - materialsTotal;
     
     doc.text('Mão de Obra e Serviços Técnicos Especializados', margin + 5, y + 16);
@@ -189,10 +207,12 @@ export const generatePDF = async (budget: BudgetData, professional: Professional
       try { doc.addImage(budget.signature, 'PNG', pageWidth - margin - 65, y - 18, 55, 15); } catch (e) {}
     }
 
-    doc.save(`Proposta_${(budget.client.name || 'proposta').replace(/\s+/g, '_')}.pdf`);
+    const fileName = `Proposta_${(budget.client.name || 'proposta').replace(/\s+/g, '_')}.pdf`;
+    downloadPDF(doc, fileName);
     return true;
   } catch (error) {
     console.error('Erro ao gerar PDF:', error);
+    alert('Erro ao gerar PDF. Verifique se o navegador permite downloads.');
     return false;
   }
 };
@@ -280,10 +300,12 @@ export const generateReceiptPDF = async (budget: BudgetData, professional: Profe
       try { doc.addImage(professional.signature, 'PNG', pageWidth - 85, y - 18, 50, 15); } catch (e) {}
     }
 
-    doc.save(`Recibo_${budget.client.name.replace(/\s+/g, '_')}.pdf`);
+    const fileName = `Recibo_${budget.client.name.replace(/\s+/g, '_')}.pdf`;
+    downloadPDF(doc, fileName);
     return true;
   } catch (error) {
     console.error('Erro ao gerar recibo:', error);
+    alert('Erro ao gerar Recibo. Verifique as permissões do navegador.');
     return false;
   }
 };

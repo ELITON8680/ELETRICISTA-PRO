@@ -271,7 +271,7 @@ const BudgetForm: React.FC<Props> = ({ budget, professional, settings, onUpdate,
                   {(budget.services || []).map(s => (
                     <div key={s.id} className="bg-white p-4 rounded-3xl border border-slate-100 shadow-sm space-y-3">
                       <div className="flex justify-between items-start">
-                        <div className="flex-1">
+                        <div className="flex-1 min-w-0">
                           <p className="text-sm font-black text-slate-900">{s.name}</p>
                           <p className="text-[10px] text-slate-400 font-bold uppercase">{s.category}</p>
                         </div>
@@ -401,7 +401,7 @@ const BudgetForm: React.FC<Props> = ({ budget, professional, settings, onUpdate,
       {step === 3 && (
         <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
           <h2 className="text-2xl font-extrabold text-slate-800">Materiais</h2>
-          <MaterialsTable items={budget.materials} onChange={items => updateField('materials', items)} />
+          <MaterialsTable items={budget.materials} settings={settings} onChange={items => updateField('materials', items)} />
         </div>
       )}
 

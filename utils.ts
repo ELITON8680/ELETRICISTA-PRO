@@ -3,8 +3,8 @@ import { BudgetData, ProfessionalData, AppSettings, PricingMode, AdjustmentType,
 
 export const calculateServiceItemTotal = (item: AppliedService): number => {
   if (!item) return 0;
-  const qty = Number(item.quantity) || 0;
-  const val = Number(item.unitValue) || 0;
+  const qty = Math.max(0, Number(item.quantity) || 0);
+  const val = Math.max(0, Number(item.unitValue) || 0);
   const subtotal = val * qty;
   
   let discount = 0;
